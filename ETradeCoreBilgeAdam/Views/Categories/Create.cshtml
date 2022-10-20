@@ -1,0 +1,13 @@
+﻿@model DataAccess.Entities.Category
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@*@Html.Partial("_CreateEdit", Model)*@ <!-- _CreateEdit'i burada tanımladık -->
+
+@*@await Html.PartialAsync("_CreateEdit", Model)*@    <!-- Birden fazla method yapı gelirse kullanıcıyı bekletmemek için async - await yaparız -->
+
+<partial name="_CreateEdit" model="Model"/>     @* Veya Bunu Kullan *@

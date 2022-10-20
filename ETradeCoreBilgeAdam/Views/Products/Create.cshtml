@@ -1,0 +1,138 @@
+﻿@model DataAccess.Entities.Product
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        @* <form asp-action="Create">*@
+        <!--<form action="/Products/Create">method = "post">-->
+        @* @using (Html.BeginForm("Create", "Products", FormMethod.Post))    // yolu action controller ve post yani form üzerindne gönderileceğini belirleyebiliriz
+        using (Html.BeginForm("Create"))*@      <!--Sadece action versekte olur-->
+        @using (Html.BeginForm())    @*hiçbir şey vermesekte olur default ayarlarıda her zaman post'tur*@
+        {
+            @Html.AntiForgeryToken()
+
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            @Html.ValidationSummary(false, null, new{ @class = "text-danger"})
+
+            <div class="row mb-3">
+
+                <label class="col-2 col-form-label">Product Name</label>
+
+                @*<label asp-for="Name" class="col-2 col-form-label"></label>*@
+                @*@Html.Label("Product Name")*@
+                @*@Html.LabelFor(m => m.Name, null, new{ @class = "col-2 col-form-label"})*@
+
+                <div class="col-5">
+                    @*<input asp-for="Name" class="form-control" />*@
+                    @Html.TextBoxFor(m => m.Name, new{ @class = "form-control"})
+
+                    @*<span asp-validation-for="Name" class="text-danger"></span>*@
+                    @Html.ValidationMessageFor(m => m.Name, null, new{ @class="text-danger"})
+
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Description" class="col-2 col-form-label"></label>
+                <div class="col-5">
+
+                    @*<textarea asp-for="Description" class="form-control" rows="4"></textarea>*@
+                    @Html.TextAreaFor(m => m.Description, new { rows = "4", @class = "form-control"})
+
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="StockAmount" class="col-2 col-form-label"></label>
+                <div class="col-5">
+
+                    <input asp-for="StockAmount" class="form-control" />
+                    @*@Html.EditorFor(m => m.StockAmount)*@
+
+                    <span asp-validation-for="StockAmount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="UnitPrice" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <input asp-for="UnitPrice" class="form-control" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="ExpirationDate" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    <input asp-for="ExpirationDate" class="form-control" type="text" id="datepicker" /> <!--datepicker için id tanımladık-->
+                    <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="CategoryId" class="col-2 col-form-label"></label>
+                <div class="col-5">
+                    @* <select asp-for="CategoryId" class="form-control" id="select" asp-items="ViewBag.CategoryId">
+                <option value="">-- Select --</option>
+                </select>*@
+                    @Html.DropDownListFor(m => m.CategoryId, (ViewBag.CategoryId as SelectList), "--Select--", new { @class = "form-control", id="select"})  <!--select2 için id ekledik-->
+
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="ShopIds" class="col-2 col-form-control"></label>
+                <div class="col-5">
+                    @*<select multiple asp-for="ShopIds" class="form-control" id="multiselect" asp-items="ViewBag.ShopIds">
+                </select>*@
+
+                    @Html.ListBoxFor(m => m.ShopIds, ( ViewBag.ShopIds as MultiSelectList), new { @class="form-control", id="multiselect"})
+
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <div class="offset-2 col-5">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    &nbsp;&nbsp;
+                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+                    &nbsp;&nbsp;
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            @*</form>*@
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    @*<script src="~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.tr.min.js"></script>*@   <!--Dili seçmek için-->
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    @* <script src="~/lib/select2/js/i18n/tr.min.js"></script>*@ <!--Dil paketi (Bunları tanımladık ama kullanmadık istersek kullanabiliriz)-->
+
+    <script>
+        $(function() {
+            $('#datepicker').datepicker({  // id tanımlanmış olduğu için değiştireceğin takvime id veya class ekle
+                // language: "tr",  // takvimin türkçe formatta olmasını istersek bunu aktifleştirmemiz lazım
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $("#select").select2();
+            $("#multiselect").select2();
+        });
+    </script>
+
+}
+
+
+
+

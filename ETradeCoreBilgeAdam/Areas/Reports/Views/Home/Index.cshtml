@@ -1,0 +1,145 @@
+﻿@model HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+<h1>Report</h1>
+<form asp-action="Index" method="get" autocomplete="off">
+    <!-- autocomplete sayfada daha önce girilen verileri göstermesini engelliyor -->
+    <div class="row">
+        <div class="col-2">
+            @await Component.InvokeAsync("Categories")
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-2">
+                    <label asp-for="Filter.CategoryId"></label>
+                </div>
+                <div class="col-4">
+                    <select asp-for="Filter.CategoryId" asp-items="Model.Categories" class="form-control select2">
+                        <option value="">-- All --</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <label asp-for="Filter.ProductName"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="Filter.ProductName" asp-items="Model.Categories" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <label asp-for="Filter.ShopIds"></label>
+                </div>
+                <div class="col-4">
+                    <select multiple asp-for="Filter.ShopIds" class="form-control select2" asp-items="Model.Shops">
+                    </select>
+                </div>
+                <div class="col-2">
+                    <label asp-for="Filter.DateStart"></label>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <input type="text" aasp-for="Filter.DateStart" class="form-control takvim" />
+                        <span class="input-group-text">-</span>
+                        <input type="text" aasp-for="Filter.DateEnd" class="form-control takvim" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-2 col-10">
+                    <br />
+                    <button type="submit" class="btn btn-success">Search</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <a asp-action="Index" class="btn btn-outline-success">Clear</a>
+                </div>
+            </div>
+
+            @if (Model.Report != null && Model.Report.Count > 0)
+            {
+                <table class="display" id="products" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().ShopName) @*IEnumrable kullanırken direk özelliklere ulaşabiliyoruz ama list varsa first'le ula çünkü özelliğin sadece adını alıcaz*@
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().CategoryName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().ProductName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().ProductUnitPrice)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().StockAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Report.FirstOrDefault().ExpirationDateDisplay)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Report)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShopName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductUnitPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StockAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpirationDateDisplay)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-primary">No recors found!</p>
+            }
+
+        </div>
+
+    </div>
+</form>
+
+
+@section Scripts{
+    <link href="/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <script src="~/lib/select2/js/select2.min.js"></script>
+
+    <script>
+        $(function() {
+            $("#products").DataTable();
+
+            $('.takvim').datepicker({
+                autoclose: true,
+                todayHighlight: true
+            });
+            $(".select2").select2();
+        });
+    </script>
+}

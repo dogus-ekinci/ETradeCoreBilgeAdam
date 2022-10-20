@@ -1,0 +1,14 @@
+﻿@model DataAccess.Entities.Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (ViewBag.Message != null)
+{
+    <p> class ="text-danger"@ViewBag.Message</p>
+}
+
+<partial name="_CreateEdit" model="Model" />

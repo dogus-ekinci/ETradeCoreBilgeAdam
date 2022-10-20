@@ -1,0 +1,16 @@
+﻿@*categoriesViewComponent için view oluşturuyoruz bu yol önemli shared altında component oluşturup hangi veriyi çekeceksek o isimde dosya oluşturuyoruz*@
+
+@model List<Category>
+@*displayName kullanmayacağımız için list kullanabiliriz yoksa IEnumrable kulanıcaz *@
+
+<ul class="navbar-nav">
+    <li>
+        <a asp-action="Index" asp-controller="Home" asp-area="Reports">All Categories</a>
+    </li>
+    @foreach (var category in Model)
+    {
+        <li>
+            <a asp-action="Index" asp-controller="Home" asp-area="Reports" asp-route-Filter.CategoryId="@category.Id">@category.Name</a>
+        </li>
+    }
+</ul>

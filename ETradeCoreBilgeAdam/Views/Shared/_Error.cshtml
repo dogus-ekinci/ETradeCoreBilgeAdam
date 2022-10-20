@@ -1,0 +1,16 @@
+﻿@model string   // istediğin gibi değer göndereilirsin int vs.
+    <!--NotFound (404) hatası yerine belli bir yazı ile hata mesajı vermek için ortak bir view yazdık-->
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+
+@if (string.IsNullOrWhiteSpace(Model))
+{
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+}
+else
+{
+    <h2 class="text-danger">@Model</h2>
+}

@@ -1,0 +1,107 @@
+﻿@model IEnumerable<DataAccess.Entities.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    @Html.ActionLink("Create new", "Create") @* HTML Helper *@
+
+    @* <a asp-action="Create">Create New</a>   <!--Tag Helper--> *@  <!-- Bu daha uygun yöntem -->
+    <!-- <a href="/Products/Create">Create New</a> -->  <!-- Üsttekiyle aynı şey-->
+</p>
+
+@if (TempData["Message"] != null)
+{
+    <p class="text-primary">@TempData["Message"]</p>
+}
+
+<p class="text-success">
+    @*@ViewBag.Count*@
+    @{
+        string count = ViewBag.Count;   // ViewBag'i tanımlayıp @ kullanıp tanımladığımızı kullanabiliriz
+    }			<!-- ViewBag ve ViewData aynı şey sadece kullanımı farklı-->
+    @count
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPriceDisplay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpirationDateDisplay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryNameDisplay)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @*item.Name*@	<!-- Bu şekilde de kullanılabilir ama genelde displayfor kullanılır-->
+                @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockAmount) units
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPriceDisplay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpirationDateDisplay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryNameDisplay)
+                </td>
+                <td>
+                    <!-- aşağıda hangi kaydı döneceksek "asp-route-kendi belirledğin bir isim" şeklinde Id dönerek o objedeki özelliği çekersin -->
+                    @* <a asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;|&nbsp; *@
+                    @Html.ActionLink("Details", "Details", "Products", new{id = item.Id})&nbsp;|&nbsp;	<!-- HTML Helper -->
+                    @*<a href="/Products/Details/1">Details</a>*@ <!-- controller/action/id? -->
+
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>&nbsp;|&nbsp;
+
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                    <a href="#" onclick="deleteItem(@item.Id)" title="Delete"><i class="fa-solid fa-trash"></i></a> <!--alttaki alertify tanımlayıp icon ekledik delete için-->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts{
+
+    <link href="~/lib/AlertifyJS/css/alertify.min.css" rel="stylesheet" />
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
+
+    <script>
+        function deleteItem(id) {
+            alertify.confirm("Warning!",
+                "Are you sure?",
+                function() { // OK
+                    window.location.href = "/Products/Delete/" + id;
+                },
+                function() { // Cancel
+
+                }
+            ).set('labels', { ok: 'Yes', cancel: 'No' });
+        }
+    </script>
+}
+
+
+
