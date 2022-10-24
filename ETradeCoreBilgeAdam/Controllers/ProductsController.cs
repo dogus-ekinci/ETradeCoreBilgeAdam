@@ -71,14 +71,22 @@ namespace ETradeCoreBilgeAdam.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _productService.Add(product);
-                if (result.IsSuccessful)
+                var updateResult = UpdateImage(product, productImage);  // create kısmında image oluşturduk
+                if (updateResult == false)
                 {
-                    TempData["Message"] = result.Message;
-                    return RedirectToAction(nameof(Index));
-                    //return RedirectToAction("Index");
+                    ModelState.AddModelError("", "File extension and length are not valid!");
                 }
-                ModelState.TryAddModelError("", result.Message);    // validation summary
+                else
+                {
+                    var result = _productService.Add(product);
+                    if (result.IsSuccessful)
+                    {
+                        TempData["Message"] = result.Message;
+                        return RedirectToAction(nameof(Index));
+                        //return RedirectToAction("Index");
+                    }
+                    ModelState.TryAddModelError("", result.Message);    // validation summary
+                }
             }
             // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
             ViewData["CategoryId"] = new SelectList(_categoryService.GetList(), "Id", "Name", product.CategoryId);    // Create oluştururken dropdown list gerek o yüzden selectList yapıldı
