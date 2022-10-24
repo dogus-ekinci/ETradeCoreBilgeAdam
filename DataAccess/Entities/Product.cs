@@ -41,9 +41,13 @@ namespace DataAccess.Entities
 
         public Category? Category { get; set; }
 
-        public List<ProductShop> ProductShops { get; set; } // many to many ilişki için tanımladık
+        public List<ProductShop>? ProductShops { get; set; } // many to many ilişki için tanımladık
 
+        [Column(TypeName = "image")]
+        public byte[]? Image { get; set; }
 
+        [StringLength(5)]
+        public string? ImageExtension { get; set; }  // .jpg, .bmp, .pnp
     }
 
     public partial class Product    // parçaladık
@@ -72,5 +76,8 @@ namespace DataAccess.Entities
         [DisplayName("Shops")]
         public string? ShopNamesDisplay { get; set; }
 
+        [NotMapped]
+        [DisplayName("Image")]
+        public string? ImageTagSrcDisplay { get; set; }
     }
 }

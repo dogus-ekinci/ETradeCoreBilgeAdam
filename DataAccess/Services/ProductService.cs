@@ -1,5 +1,6 @@
 ﻿using AppCore.DataAccess.Results;
 using AppCore.DataAccess.Results.Bases;
+using AppCore.Utils;
 using DataAccess.Contexts;
 using DataAccess.Entities;
 using DataAccess.Services.Bases;
@@ -33,7 +34,9 @@ public class ProductService : ProductServiceBase
             ProductShops = p.ProductShops,
             ShopNamesDisplay = string.Join("<br />", p.ProductShops.Select(ps => ps.Shop.Name)),
             ShopIds = p.ProductShops.Select(ps => ps.ShopId ?? 0).ToList(),
-            
+            Image = p.Image,
+            ImageExtension = p.ImageExtension,
+            ImageTagSrcDisplay = p.Image != null ? FileUtil.GetContentType(p.ImageExtension, true, true) + Convert.ToBase64String(p.Image) : null
         });
     }
 

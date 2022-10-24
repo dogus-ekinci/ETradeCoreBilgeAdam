@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccess.Contexts;
 using DataAccess.Entities;
 using DataAccess.Services.Bases;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
+using AppCore.Utils;
 
 namespace ETradeCoreBilgeAdam.Controllers
 {
@@ -72,7 +67,7 @@ namespace ETradeCoreBilgeAdam.Controllers
         [HttpPost]  // post işlemi için bunu koy
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public IActionResult Create(Product product)
+        public IActionResult Create(Product product, IFormFile productImage)
         {
             if (ModelState.IsValid)
             {
@@ -89,6 +84,35 @@ namespace ETradeCoreBilgeAdam.Controllers
             ViewData["CategoryId"] = new SelectList(_categoryService.GetList(), "Id", "Name", product.CategoryId);    // Create oluştururken dropdown list gerek o yüzden selectList yapıldı
             ViewBag.ShopIds = new MultiSelectList(_shopService.GetList(), "Id", "Name", product.ShopIds);
             return View(product);
+        }
+
+        private bool? UpdateImage(Product entity, IFormFile uploadedFile)
+        {
+            #region Validation
+            bool? result = null;
+            if (uploadedFile != null && uploadedFile.Length > 0)
+            {
+                result = FileUtil.CheckFileExtension(uploadedFile.FileName, ".jpg, .jpeg, .pnp").IsSuccessful;
+                if (result == true)
+                {
+                    result = FileUtil.CheckFileLength(uploadedFile.Length, 1).IsSuccessful;
+                }
+            }
+            #endregion
+
+            #region Dosyanın Kaydedilmesi
+            if (result == true)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    uploadedFile.CopyTo(memoryStream);
+                    entity.Image = memoryStream.ToArray();
+                    entity.ImageExtension = Path.GetExtension(uploadedFile.FileName);
+                }
+            }
+            #endregion
+
+            return result;
         }
 
         // GET: Products/Edit/5

@@ -10,11 +10,11 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        @* <form asp-action="Create">*@
+        @* <form asp-action="Create" enctype = "multipart/form-data">*@
         <!--<form action="/Products/Create">method = "post">-->
         @* @using (Html.BeginForm("Create", "Products", FormMethod.Post))    // yolu action controller ve post yani form üzerindne gönderileceğini belirleyebiliriz
         using (Html.BeginForm("Create"))*@      <!--Sadece action versekte olur-->
-        @using (Html.BeginForm())    @*hiçbir şey vermesekte olur default ayarlarıda her zaman post'tur*@
+        @using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))    @*tag helperle yani üstteki form şeklinde gönderebiliriz biz binary daatya göndereceğimiz için enctype belirledik formmethod olmasada olur zaten bu post*@
         {
             @Html.AntiForgeryToken()
 
@@ -92,6 +92,14 @@
 
                     @Html.ListBoxFor(m => m.ShopIds, ( ViewBag.ShopIds as MultiSelectList), new { @class="form-control", id="multiselect"})
 
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <label asp-for="Image" class="col-2 col-form-label"></label>    <!-- image inputu -->
+                <div class="col-5">
+                    <imput type="file" class="form-control" name="productImage" />  <!-- Create indexinde create'ye extra param belirledik name ile onu göndermemiz lazım-->
                 </div>
             </div>
 
