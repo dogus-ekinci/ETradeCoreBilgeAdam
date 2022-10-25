@@ -25,7 +25,7 @@
     }			<!-- ViewBag ve ViewData aynı şey sadece kullanımı farklı-->
     @count
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -43,7 +43,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.CategoryNameDisplay)
             </th>
-            <th>
+            <th class="thwidth">
                 @Html.DisplayNameFor(model => model.ImageTagSrcDisplay)
             </th>
             <th></th>
@@ -76,8 +76,12 @@
                     }
                 </td>
                 <td>
+                    <!-- ürün ekleme linki -->
+                    <a asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@item.Id" title="Add to Cart"><i class="fa-solid fa-bucket"></i></a>
+
                     <!-- aşağıda hangi kaydı döneceksek "asp-route-kendi belirledğin bir isim" şeklinde Id dönerek o objedeki özelliği çekersin -->
                     @* <a asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;|&nbsp; *@
+
                     @Html.ActionLink("Details", "Details", "Products", new{id = item.Id})&nbsp;|&nbsp;	<!-- HTML Helper -->
                     @*<a href="/Products/Details/1">Details</a>*@ <!-- controller/action/id? -->
 

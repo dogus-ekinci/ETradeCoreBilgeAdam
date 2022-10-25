@@ -94,7 +94,7 @@ namespace ETradeCoreBilgeAdam.Controllers
             return View(product);
         }
 
-        private bool? UpdateImage(Product entity, IFormFile uploadedFile)
+        private bool? UpdateImage(Product entity, IFormFile? uploadedFile)
         {
             #region Validation
             bool? result = null;
@@ -144,10 +144,16 @@ namespace ETradeCoreBilgeAdam.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Product product, IFormFile? productImage) // parametredeki class'ada nullable koyulabiliyor
         {
             if (ModelState.IsValid)
             {
+                var updateResult = UpdateImage(product, productImage);  // image için edit oluşturduk
+                if (updateResult == false)
+                {
+                    ModelState.AddModelError("", "File extension and length are not valid!");
+                }
+
                 var result = _productService.Update(product);
                 if (result.IsSuccessful)
                 {
@@ -171,6 +177,12 @@ namespace ETradeCoreBilgeAdam.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        public IActionResult DeleteImage(int id)    // deleteImage methodu'nu base'ye tanımladık çünkü burda en üstte productServiceBase tanımlı
+        {
+            _productService.DeleteImage(id);
+            return RedirectToAction(nameof(Details), new { id }); // details id'sine parametre id verdik eşitledik
+        }
 
     }
 }

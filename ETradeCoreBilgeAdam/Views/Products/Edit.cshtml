@@ -10,7 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <!-- dataya veri göndermek için form olması lazım ve enctype yaz -->
             @Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row mb-3">
@@ -58,13 +59,23 @@
                 </div>
             </div>
 
-            <div class="col-5">
-                <select multiple asp-for="ShopIds" class="form-control" id="multiselect" asp-items="ViewBag.ShopIds">
-                </select>
-
-                @* @Html.ListBoxFor(m => m.ShopIds, ( ViewBag.ShopIds as MultiSelectList) new { @class="form-control", id="multiselect"})*@
-
+            <div class="row mb-3">
+                <label asp-for="ShopIds" class="col-2 col-form-control"></label>
+                <div class="col-5">
+                    <select multiple asp-for="ShopIds" class="form-control" id="multiselect" asp-items="ViewBag.ShopIds">
+                    </select>
+                    @* @Html.ListBoxFor(m => m.ShopIds, ( ViewBag.ShopIds as MultiSelectList) new { @class="form-control", id="multiselect"})*@
+                </div>
             </div>
+
+            <div class="row mb-3">
+                <label asp-for="Image" class="col-2 col-form-label"></label>    <!-- image inputu -->
+                <div class="col-5">
+                    <input type="file" class="form-control" name="productImage" />  <!-- Create indexinde create'ye extra param belirledik name ile onu göndermemiz lazım-->
+                </div>
+            </div>
+
+            <a href="/Products/DeleteImage/@Model.Id">Delete Image</a>  <!-- Edit kısmında image silme linki -->
 
             <input type="hidden" asp-for="Id" />
             @*@Html.HiddenFor(m => m.Id)*@

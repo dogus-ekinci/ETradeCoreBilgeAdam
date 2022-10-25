@@ -5,7 +5,6 @@ using DataAccess.Contexts;
 using DataAccess.Entities;
 using DataAccess.Services.Bases;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using System.Linq.Expressions;
 
 public class ProductService : ProductServiceBase
@@ -81,6 +80,11 @@ public class ProductService : ProductServiceBase
             ShopId = sId
         }).ToList();
 
+        if (entithy.Image == null)
+        {
+            entithy.Image = product.Image;
+        }
+
         return base.Update(entithy, save);
     }
 
@@ -90,4 +94,5 @@ public class ProductService : ProductServiceBase
         _dbContext.Set<ProductShop>().RemoveRange(product.ProductShops);
         return base.Delete(predicate, save);
     }
+   
 }

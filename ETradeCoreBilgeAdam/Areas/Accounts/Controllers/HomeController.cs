@@ -40,7 +40,7 @@ namespace ETradeCoreBilgeAdam.Areas.Accounts.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.Role, user.Role.Name),
-                        new Claim(ClaimTypes.Actor, user.UserName)
+                        new Claim(ClaimTypes.Sid, user.Id.ToString()) // sepetteki ürünler için belirledik 
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

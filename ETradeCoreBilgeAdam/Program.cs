@@ -23,6 +23,12 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 #endregion
 
+// bu session'un kullanýlmasý için aþaðýda use kullanmak gerekiyor
+builder.Services.AddSession(options =>  // eklenen ürünlerin sepette kalma süresi
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // default 20 mins
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // country ve cities arasýnda cycle olduðu için addjson methodu yaptýk
@@ -76,6 +82,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();    // Authentication ekledikten sonra burda kullanmamýz lazým ----- sen kimsin ?
                             // Sýralama önemli önce authentication sonra authorization gelmeli !!!!!!!!
