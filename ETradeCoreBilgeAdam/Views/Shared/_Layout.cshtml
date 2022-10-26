@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - E-TradeCore Bilge Adam</title>
+    <title>@ViewData["Title"] - @AppSettings.Title</title>  <!-- appsettings'teki title buraya tanımladık -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ETradeCoreBilgeAdam.styles.css" asp-append-version="true" />
 </head>
@@ -49,8 +49,14 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Shops" asp-action="Index">Shops</a>
                             </li>
 
-                             <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="Reports" asp-controller="Home" asp-action="Index">Reports</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="GetCart">Cart</a>
                             </li>
                         }
 
@@ -71,8 +77,8 @@
                                     {
                                         <li class="nav-item">
                                             @*<span class="text-secondary">@User.Claims.SingleOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Actor)</span>*@
-                                             <span class="text-secondary"><i class="fa-solid fa-skull"></i>@User.Identity.Name</span> <!--Üsttekiyle aynı şey-->
-                                             <!-- font-awesome kütüphanesini ekledik icon için <i> tag'ıyla-->
+                                            <span class="text-secondary"><i class="fa-solid fa-skull"></i>@User.Identity.Name</span> <!--Üsttekiyle aynı şey-->
+                                            <!-- font-awesome kütüphanesini ekledik icon için <i> tag'ıyla-->
                                             <a class="nav-link text-nav" asp-area="Accounts" asp-controller="Home" asp-action="Logout">Logout</a>
                                         </li>
                                     }

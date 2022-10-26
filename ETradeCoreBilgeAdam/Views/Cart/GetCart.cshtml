@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CartItemGroupByModel>
+@* ViewImports'ta tanımla yoksa tanımaz*@
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="ClearCart">Clear</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice) @* TotalPriceDisplay olmalı*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCount)
+                </td>
+                <td>
+                    <a asp-action="DeleteFromCart" asp-route-productId="@item.ProductId">Delete from cart</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><b>Total:</b></td>
+            <td>
+                @Model.Sum(m => m.TotalPrice)
+            </td>
+            <td>
+                @Model.Sum(m => m.ProductCount)
+            </td>
+        </tr>
+
+    </tbody>
+</table>

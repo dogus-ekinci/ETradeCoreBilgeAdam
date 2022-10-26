@@ -1,6 +1,7 @@
 using DataAccess.Contexts;
 using DataAccess.Services;
 using DataAccess.Services.Bases;
+using ETradeCoreBilgeAdam.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ builder.Services.AddSession(options =>  // eklenen ürünlerin sepette kalma süres
     options.IdleTimeout = TimeSpan.FromMinutes(30); // default 20 mins
 });
 
+var section = builder.Configuration.GetSection(nameof(AppSettings));    // AppSettings'i buraya tanýmlýyoruz
+section.Bind(new AppSettings());
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // country ve cities arasýnda cycle olduðu için addjson methodu yaptýk

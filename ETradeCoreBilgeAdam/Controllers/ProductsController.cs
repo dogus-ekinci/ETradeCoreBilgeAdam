@@ -5,6 +5,7 @@ using DataAccess.Services.Bases;
 using DataAccess.Services;
 using Microsoft.AspNetCore.Authorization;
 using AppCore.Utils;
+using ETradeCoreBilgeAdam.Settings;
 
 namespace ETradeCoreBilgeAdam.Controllers
 {
@@ -100,7 +101,7 @@ namespace ETradeCoreBilgeAdam.Controllers
             bool? result = null;
             if (uploadedFile != null && uploadedFile.Length > 0)
             {
-                result = FileUtil.CheckFileExtension(uploadedFile.FileName, ".jpg, .jpeg, .pnp").IsSuccessful;
+                result = FileUtil.CheckFileExtension(uploadedFile.FileName, AppSettings.FileExtensions).IsSuccessful;   // AppSettings içindeki fileextensions' u buraya tanımladık
                 if (result == true)
                 {
                     result = FileUtil.CheckFileLength(uploadedFile.Length, 1).IsSuccessful;
