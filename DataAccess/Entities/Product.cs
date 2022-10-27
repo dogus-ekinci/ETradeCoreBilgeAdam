@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DataAccess.Entities
 {
@@ -38,25 +39,29 @@ namespace DataAccess.Entities
         [DisplayName("Category")]
         public int? CategoryId { get; set; }    // dropdown üzerinden id alabilmek için
 
-
+        [JsonIgnore]    // webapi kısmında bu kısım gönderilmeyecek
         public Category? Category { get; set; }
 
+        [JsonIgnore]    // webapi kısmında bu kısım gönderilmeyecek
         public List<ProductShop>? ProductShops { get; set; } // many to many ilişki için tanımladık
 
+        [JsonIgnore]    // webapi kısmında bu kısım gönderilmeyecek
         [Column(TypeName = "image")]
         public byte[]? Image { get; set; }
 
+        [JsonIgnore]    // webapi kısmında bu kısım gönderilmeyecek
         [StringLength(5)]
         public string? ImageExtension { get; set; }  // .jpg, .bmp, .pnp
     }
 
     public partial class Product    // parçaladık
     {
+
         [NotMapped]     // add-migration yapıldığında veritabanında oluşmaması için yazdık. Sadece özelliği özelleştirmek için yapıyoruz bu class'ı
         [DisplayName("Unit Price")]
         public string? UnitPriceDisplay { get; set; }
 
-
+        [JsonIgnore]    // webapi kısmında bu kısım gönderilmeyecek
         [NotMapped]
         [DisplayName("Expiration Date")]
         public string? ExpirationDateDisplay { get; set; }
